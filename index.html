@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07110d" />
+  <title>ShuttleVision</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="ShuttleVision home">
+        <span class="logo">SV</span>
+        <span><strong>ShuttleVision</strong><small>Badminton intelligence</small></span>
+      </a>
+      <button id="historyBtn" class="icon-btn" aria-label="Session history">☰</button>
+    </header>
+
+    <section id="home" class="screen active">
+      <div class="hero">
+        <span class="eyebrow">AI-ASSISTED TRAINING</span>
+        <h1>See your game.<br><em>Improve every rally.</em></h1>
+        <p>Turn your phone into a badminton training companion. Start with rally tracking today; movement and shot analysis come next.</p>
+      </div>
+
+      <div class="mode-card featured">
+        <div class="mode-icon">🏸</div>
+        <div class="mode-copy">
+          <span class="ready">READY IN V1</span>
+          <h2>Rally Tracker</h2>
+          <p>Run the camera continuously, count shots, time rallies and build a session summary.</p>
+        </div>
+        <button id="openTracker" class="primary">Start session</button>
+      </div>
+
+      <div class="grid">
+        <article class="mode-card locked"><span>🦶</span><h3>Footwork</h3><p>Player position & court heatmap.</p><b>V2</b></article>
+        <article class="mode-card locked"><span>💥</span><h3>Shot Analysis</h3><p>Smash, clear, drop, drive & net.</p><b>V3</b></article>
+        <article class="mode-card locked"><span>✨</span><h3>Highlights</h3><p>Automatically save standout rallies.</p><b>V4</b></article>
+        <article class="mode-card locked"><span>📊</span><h3>Coach Report</h3><p>Session trends and coaching cues.</p><b>V4</b></article>
+      </div>
+
+      <section class="recent">
+        <div class="section-head"><h2>Recent sessions</h2><button id="clearHistory" class="text-btn">Clear</button></div>
+        <div id="recentList" class="recent-list"></div>
+      </section>
+    </section>
+
+    <section id="tracker" class="screen tracker-screen">
+      <div class="camera-shell">
+        <video id="camera" autoplay muted playsinline></video>
+        <div id="cameraFallback" class="camera-fallback"><div>📷</div><p>Camera preview</p><small>Allow camera access when prompted.</small></div>
+        <div class="camera-top">
+          <button id="backBtn" class="glass">←</button>
+          <span id="statusPill" class="status idle">READY</span>
+          <button id="flipBtn" class="glass">↻</button>
+        </div>
+        <div class="court-guide"><span>Keep the full court and players in frame</span></div>
+        <div id="rallyLive" class="rally-live hidden"><span>RALLY</span><strong id="liveTime">00:00.0</strong></div>
+      </div>
+
+      <div class="tracker-panel">
+        <div class="live-stats">
+          <div><span>Rallies</span><strong id="rallies">0</strong></div>
+          <div><span>Shots</span><strong id="shots">0</strong></div>
+          <div><span>Current</span><strong id="currentShots">0</strong></div>
+        </div>
+
+        <div class="controls">
+          <button id="sessionBtn" class="primary big">Start tracking</button>
+          <button id="shotBtn" class="shot" disabled><span>🏸</span> Shot</button>
+          <button id="rallyBtn" class="secondary" disabled>Start rally</button>
+        </div>
+        <p class="prototype-note"><strong>V1 prototype:</strong> camera + rally workflow are live. Tap <b>Shot</b> for each contact while we prepare automatic vision detection.</p>
+      </div>
+    </section>
+
+    <section id="summary" class="screen summary-screen">
+      <div class="summary-mark">🏸</div>
+      <span class="eyebrow">SESSION COMPLETE</span>
+      <h1>Good work.</h1>
+      <p id="summaryDate" class="muted"></p>
+      <div class="summary-grid">
+        <div><span>Rallies</span><strong id="sumRallies">0</strong></div>
+        <div><span>Total shots</span><strong id="sumShots">0</strong></div>
+        <div><span>Avg shots / rally</span><strong id="sumAvg">0</strong></div>
+        <div><span>Longest rally</span><strong id="sumLongest">0</strong></div>
+        <div><span>Playing time</span><strong id="sumPlayTime">0:00</strong></div>
+        <div><span>Session time</span><strong id="sumSessionTime">0:00</strong></div>
+      </div>
+      <button id="newSession" class="primary big">New session</button>
+      <button id="homeBtn" class="secondary wide">Back home</button>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
