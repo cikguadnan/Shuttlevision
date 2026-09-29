@@ -1,0 +1,50 @@
+name: Build ShuttleVision ONNX model
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-shuttle-model.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-model:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install converter
+        run: pip install --quiet ultralytics huggingface_hub onnx onnxruntime onnxslim
+
+      - name: Download and export shuttle detector
+        run: |
+          mkdir -p models
+          python - <<'PY'
+          from huggingface_hub import hf_hub_download
+          from ultralytics import YOLO
+          import shutil, os
+          pt = hf_hub_download('Huydinh1205/shuttle_yolo11s', 'shuttle_yolo11s.pt')
+          out = YOLO(pt).export(format='onnx', imgsz=1280, simplify=True, opset=17)
+          dest = 'models/shuttle_yolo11s.onnx'
+          shutil.copy2(out, dest)
+          print('Built', dest, os.path.getsize(dest), 'bytes')
+          PY
+
+      - name: Commit browser model
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add models/shuttle_yolo11s.onnx
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add browser-ready shuttle YOLO11s ONNX model'
+          git push
